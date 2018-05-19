@@ -59,6 +59,10 @@ func newTemplate(dir, pkg, templateArgsString string) *template {
 
 // Add a mapping for identifier
 func (t *template) addMapping(name string) {
+	if name == "_" {
+		t.mappings[name] = name
+		return
+	}
 	replacementName := ""
 	if !strings.Contains(name, t.templateName) {
 		// If name doesn't contain template name then just prefix it

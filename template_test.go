@@ -26,6 +26,8 @@ const basicTest = `package tt
 
 import "fmt"
 
+var _ interface{} = Set{}
+
 // template type Set(A)
 type A int
 
@@ -57,6 +59,8 @@ package main
 
 import "fmt"
 
+var _ interface{} = MySet{}
+
 // template type Set(A)
 
 type MySet struct{ a int }
@@ -87,6 +91,8 @@ var (
 package main
 
 import "fmt"
+
+var _ interface{} = mySet{}
 
 // template type Set(A)
 
@@ -458,7 +464,8 @@ func TestSub(t *testing.T) {
 		t.Fatalf(format, args...)
 	}
 	for i := range tests {
-		t.Logf("Test[%d] %q", i, tests[i].title)
-		testTemplate(t, &tests[i])
+		t.Run(tests[i].title, func(t *testing.T) {
+			testTemplate(t, &tests[i])
+		})
 	}
 }
