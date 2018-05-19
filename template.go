@@ -203,7 +203,13 @@ func (t *template) parse(inputFile string) {
 			// A general definition
 			switch d.Tok {
 			case token.IMPORT:
-				// Ignore imports
+				// Remove dot imports
+				for i := 0; i < len(d.Specs); i++ {
+					if imp := d.Specs[i].(*ast.ImportSpec); imp.Name != nil && imp.Name.Name == "." {
+						d.Specs = append(d.Specs[:i], d.Specs[i+1:]...)
+						i--
+					}
+				}
 			case token.CONST, token.VAR:
 				// Find and remove identifiers found in template
 				// params
