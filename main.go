@@ -85,8 +85,8 @@ func main() {
 	}
 
 	args := flag.Args()
-	if len(args) != 2 {
-		fatalf("Need 2 arguments, package and parameters")
+	if len(args) < 2 {
+		fatalf("Need at least 2 arguments, package and parameters")
 	}
 
 	cwd, err := os.Getwd()
@@ -94,6 +94,10 @@ func main() {
 		fatalf("Couldn't get wd: %v", err)
 	}
 
-	t := newTemplate(cwd, args[0], args[1])
-	t.instantiate()
+	pck := args[0]
+	args = args[1:]
+	for _, p := range args {
+		t := newTemplate(cwd, pck, p)
+		t.instantiate()
+	}
 }
